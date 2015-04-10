@@ -679,6 +679,34 @@
 		equal( $( select ).val(), "2", ".val should return the equivalent of the select's selected option's value" );
 	});
 
+	test( '`.val()` returns correct value of select element with multiple attribute', function(){
+		var select = document.createElement( "select" );
+		var option1 = document.createElement( "option" );
+		var option2 = document.createElement( "option" );
+
+		select.multiple = "multiple";
+
+		option1.value = "1";
+		option2.value = "2";
+
+		option1.selected = "selected";
+		option2.selected = "selected";
+
+		select.appendChild( option1 );
+		select.appendChild( option2 );
+
+		equal( $( select ).val(), ["1", "2"], ".val should return an array of the selected options' values" );
+
+		option1.selected = false;
+
+		equal( $( select ).val(), ["2"], ".val should return an array of the selected option's value despite there only being one" );
+
+		option2.selected = false;
+
+		// NOTE jQuery returns null, but in the test below you're expecting an empty string. What should this be?
+		equal( $( select ).val(), "", ".val should return empty string if nothing is selected" );
+	});
+
 	test( '`.val()` returns correct value of select element', function(){
 		var select = document.createElement( "select" );
 		var option1 = document.createElement( "option" );

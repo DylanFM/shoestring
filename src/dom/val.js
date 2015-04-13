@@ -11,7 +11,7 @@ define([ "shoestring" ], function(){
 	 * @this shoestring
 	 */
 	shoestring.fn.val = function( value ){
-		var el;
+		var el, options, values, i, option;
 		if( value !== undefined ){
 			return this.each(function(){
 				if( this.tagName === "SELECT" ){
@@ -44,7 +44,18 @@ define([ "shoestring" ], function(){
 
 			if( el.tagName === "SELECT" ){
 				if( el.selectedIndex < 0 ){ return ""; }
-				return el.options[ el.selectedIndex ].value;
+				if( el.multiple ) {
+					options = el.options,
+					values = [];
+
+					for (i = 0; i < options.length; i++) {
+						option = options[ i ];
+						if( option.selected ) { values.push( option.value ); }
+					}
+					return values;
+				} else {
+					return el.options[ el.selectedIndex ].value;
+				}
 			} else {
 				return el.value;
 			}
